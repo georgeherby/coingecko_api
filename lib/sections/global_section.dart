@@ -13,12 +13,22 @@ class GlobalSection {
   ///
   /// Get cryptocurrency global data.
   ///
+  /// **[vsCurrency]** sets the target currency of market data
+  /// (usd, eur, jpy, etc.).
+  ///
   /// Query: **/global**
   ///
-  Future<CoinGeckoResult<GlobalCoinData?>> getGlobalData() async {
-    final response = await _dio.get(
-      '/global',
-    );
+  Future<CoinGeckoResult<GlobalCoinData?>> getGlobalData(
+      {String? vsCurrency}) async {
+    var queryParameters = Map<String, dynamic>();
+
+    if (vsCurrency != null) {
+      queryParameters['vs_currency'] = vsCurrency;
+    }
+
+    final response =
+        await _dio.get('/global', queryParameters: queryParameters);
+
     if (response.statusCode == 200) {
       final data = Convert.toMap<String, dynamic>(response.data['data']);
       final result = data != null ? GlobalCoinData.fromJson(data) : null;
@@ -35,12 +45,22 @@ class GlobalSection {
 
   ///
   /// Get cryptocurrency global decentralized finance (defi) data.
+  /// 
+  /// **[vsCurrency]** sets the target currency of market data
+  /// (usd, eur, jpy, etc.).
   ///
   /// Query: **/global/decentralized\_finance\_defi**
   ///
-  Future<CoinGeckoResult<GlobalDefiData?>> getGlobalDefiData() async {
+  Future<CoinGeckoResult<GlobalDefiData?>> getGlobalDefiData(
+      {String? vsCurrency}) async {
+    var queryParameters = Map<String, dynamic>();
+
+    if (vsCurrency != null) {
+      queryParameters['vs_currency'] = vsCurrency;
+    }
     final response = await _dio.get(
       '/global/decentralized_finance_defi',
+      queryParameters: queryParameters,
     );
     if (response.statusCode == 200) {
       final data = Convert.toMap<String, dynamic>(response.data['data']);

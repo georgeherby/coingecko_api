@@ -367,6 +367,12 @@ void main() async {
     expect(isOk, true);
   });
 
+  test('call /global with vs_currency', () async {
+    final result = await api.global.getGlobalData(vsCurrency: 'gbp');
+    bool isOk = !result.isError && result.data != null && result.data!.activeCryptocurrencies > 0;
+    expect(isOk, true);
+  });
+
   test('call /global/defi', () async {
     final result = await api.global.getGlobalDefiData();
     bool isOk = !result.isError &&
